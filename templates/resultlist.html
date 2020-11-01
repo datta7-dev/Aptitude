@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            background-color: rgb(255, 255, 255);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        #main {
+            display: flex;
+        }
+
+        .body-content {
+            flex-basis: 90%;
+            background-color: rgb(255, 255, 255);
+            height: 100%;
+            margin-left: 250px;
+        }
+
+        .side-menu {
+            flex-basis: 10%;
+            position: fixed;
+            background: #1a7783;
+            width: 250px;
+            height: 100%;
+            margin-top: 0px;
+        }
+
+        .side-menu center img {
+
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            margin-top: 100px;
+            border: 3px solid white;
+        }
+
+        .side-menu center h4 {
+
+            color: #000000;
+        }
+
+        .side-menu a {
+            display: block;
+            line-height: 60px;
+            transition: 0.5s;
+
+        }
+
+        .side-menu a:hover {
+
+            background: #59acac;
+            text-decoration: none;
+            /*padding-left: 20px;*/
+        }
+
+        .side-menu span {
+            font-size: 20px;
+            margin-left: 10px;
+            color: #000000;
+        }
+
+        .side-menu i {
+
+            font-size: 20px;
+            margin-left: 20px;
+            color: #000000;
+        }
+
+        .body-conent .examlist-box {
+            width: 60%;
+            position: relative;
+            margin-left: 20%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            color: #000000;
+            box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.5);
+
+        }
+
+
+        .body-content #exam-data {
+            margin: 1%;
+            flex-basis: 300px;
+            box-shadow: 0px 1px 3px 0.5px rgba(0, 0, 0, 0.2);
+        }
+
+        .body-content #exam-data:hover {
+            box-shadow: 0px 1px 4px 0.5px rgba(0, 0, 0, 0.5);
+        }
+
+        .active {
+            background-color: #59acac;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <div class="side-menu">
+            <center>
+                <img src="{{ profile }}">
+                <br><br>
+                <h4>{{ user_name }}</h4>
+            </center>
+            <br>
+            <a href="index"><i class="fa fa-home" aria-hidden="true"></i><span>Home</span></a>
+            <a href="examliststudent"><i class="fa fa-file-code-o" aria-hidden="true"></i><span>Exams</span></a>
+            <a href="practicetest"><i class="fa fa-file-text" aria-hidden="true"></i>
+                <span>Practice Test</span></a>
+            <a href="result" class="active"><i class="fa fa-check" aria-hidden="true"></i><span>results</span></a>
+            <a href="logout"><i class="fa fa-sign-out" aria-hidden="true"></i><span>Logout</span></a>
+        </div>
+    </div>
+
+    <div class="body-content  table-striped" style="width:70%;margin-left:23%;">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Exam Code</th>
+                    <th scope="col">Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in result_data %}
+                <tr>
+                    <td>{{ r.exam_code }}</td>
+                    <td>{{ r.marks }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

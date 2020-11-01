@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Paper</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            background-color: rgb(255, 255, 255);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        #main {
+            display: flex;
+        }
+
+        .body-content {
+            flex-basis: 90%;
+            background-color: rgb(255, 255, 255);
+            height: 100%;
+            margin-left: 250px;
+        }
+
+        .side-menu {
+            flex-basis: 10%;
+            position: fixed;
+            background: #1a7783;
+            width: 250px;
+            height: 100%;
+            margin-top: 0px;
+        }
+
+        .side-menu center img {
+
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            margin-top: 100px;
+            border: 3px solid white;
+        }
+
+        .side-menu center h4 {
+
+            color: #000000;
+        }
+
+        .side-menu a {
+            display: block;
+            line-height: 60px;
+            transition: 0.5s;
+
+        }
+
+        .side-menu a:hover {
+
+            background: #59acac;
+            text-decoration: none;
+            /*padding-left: 20px;*/
+        }
+
+        .side-menu span {
+            font-size: 20px;
+            margin-left: 10px;
+            color: #000000;
+        }
+
+        .side-menu i {
+
+            font-size: 20px;
+            margin-left: 20px;
+            color: #000000;
+        }
+
+        .body-content .paper-box {
+            width: 90%;
+            position: relative;
+            margin-left: 5%;
+            margin-top: 100px;
+            padding-top: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .body-content .paper-box .question-box {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 24px;
+            margin-left: 50%;
+            width: 90%;
+            padding: 20px;
+            transform: translate(-50%, 0);
+            box-shadow: 0px 1px 3px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            z-index: 1;
+        }
+    </style>
+
+</head>
+
+<body onload="f1()">
+
+    <script language="javascript">
+        var tim;
+
+        var min = parseInt("{{ time }}");
+        var sec = 60;
+        var f = new Date();
+
+        function f1() {
+            f2();
+        }
+        function f2() {
+            if (parseInt(sec) > 0) {
+                sec = parseInt(sec) - 1;
+                document.getElementById("showtime").innerHTML = "Time Left " + (min - 1) + ":" + sec;
+                tim = setTimeout("f2()", 1000);
+            }
+            else {
+                if (parseInt(sec) == 0) {
+                    min = parseInt(min) - 1;
+                    if (parseInt(min) == 0) {
+                        clearTimeout(tim);
+                        document.getElementById('form1').submit.click();
+                        //location.href = "index.jsp";
+                    }
+                    else {
+                        sec = 60;
+                        document.getElementById("showtime").innerHTML = "Time Left " + (min - 1) + ":" + sec;
+                        tim = setTimeout("f2()", 1000);
+                    }
+                }
+
+            }
+        }
+    </script>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white"
+        style="position:fixed;width:100%;box-shadow: 0px 2px 7px rgba(121, 105, 105, 0.5);font-size:18px;">
+        <a class="navbar-brand p-0" href="#" style="cursor:default;">
+            <img src="{% static 'images/dypcoe_logo1.png' %}" width="150" height="50" class="d-inline-block align-top"
+                alt="logo image" loading="lazy">
+        </a>
+
+        <div class="navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ml-auto">
+                <div style="font-weight:bold;background-color:white;padding:10px;margin-right:10px;">
+                    <span>Exam Code: </span><span>{{ exam_code }}</span>
+                </div>
+                <div style="font-weight:bold;background-color:#f76868;padding:10px;margin-right:10px;">
+                    <span>Subject: </span><span>{{ sub_name }}</span>
+                </div>
+                <div style="font-weight: bold;background-color:#23bd23;padding:10px;">
+                    <span id="showtime"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div id="main">
+        <div class="side-menu" style="margin-top:67px;">
+            <center>
+                <img src="{{ profile }}">
+                <br><br>
+                <h4>{{ user_name }}</h4>
+            </center>
+            <br>
+        </div>
+    </div>
+    <div class="body-content">
+        <div class="paper-box">
+            <script>
+                let i = 1;
+                let qid_lst = [];
+            </script>
+            <form action="papercheck" method="POST" id="form1">
+                {% csrf_token %}
+                {% for q in paper %}
+                <div class="question-box">
+                    <p style="font-weight:bold;padding-bottom:10px;"><span>
+                            <script>document.write(i++);</script></span>) {{ q.question }}</p>
+                    <span>a. </span><input type="radio" name="{{ q.question_id }}" value="a">
+                    <span>{{ q.option_a }}</span>
+                    <br>
+                    <span>b. </span><input type="radio" name="{{ q.question_id }}" value="b">
+                    <span>{{ q.option_b }}</span>
+                    <br>
+                    <span>c. </span><input type="radio" name="{{ q.question_id }}" value="c">
+                    <span>{{ q.option_c }}</span>
+                    <br>
+                    <span>d. </span><input type="radio" name="{{ q.question_id }}" value="d">
+                    <span>{{ q.option_d }}</span>
+                    <br>
+                    {% if check is True %}
+                    <button onclick="mypopup('{{ q.question }}')" type="button" name="search" value="search"
+                        style="font-size:17px;padding:2px;background-color:rgb(244, 209, 248);color:rgb(248, 69, 69);border:#f76868;border-radius:20px;">Google
+                        Search</button>
+                    {% endif %}
+                </div>
+                <br>
+                <br>
+                <script>
+                    qid_lst.push(parseInt("{{ q.question_id }}"));
+                </script>
+                {% endfor %}
+                <input type="hidden" id="quest" name="questid" value="">
+                <input type="hidden" id="result" name="ans" value="">
+                <input type="hidden" id="marks" name="totalmarks" value="">
+                <input type="hidden" id="ecode" name="examcode" value="{{ exam_code }}">
+                <input type="hidden" id="e_type" name="examtype" value="">
+                <input onclick="ok()" type="submit" name="submit" value="submit"
+                    style="margin-left:45%;border:#23bd23;background-color:#23bd23;color:white;padding:4px 10px;cursor:pointer;font-size:20px;margin-bottom:20px;">
+            </form>
+            <!-- <h1 id="t"></h1> -->
+
+        </div>
+        <script>
+            //console.log(qid_lst);
+            /*for (let id = 0; id < qid_lst.length; id++) {
+                console.log(qid_lst[id]);
+            }*/
+            function ok() {
+                //this.qid_lst = id;
+                //console.log(qid_lst);
+                let element;
+                let isChecked = 0;
+                let answers = [];
+                for (let j = 0; j < qid_lst.length; j++) {
+                    element = document.getElementsByName(qid_lst[j]);
+                    for (let k = 0; k < element.length; k++) {
+                        if (element[k].checked) {
+                            isChecked = 1;
+                            answers.push(element[k].value);
+                        }
+                    }
+                    if (isChecked != 1) {
+                        answers.push("0");
+                    }
+
+                    isChecked = 0;
+                }
+                //alert("quest-" + qid_lst + " ans-" + answers);
+                document.getElementById("quest").value = qid_lst;
+                document.getElementById("result").value = answers;
+                //document.getElementById('form1').submit.click();
+
+
+                let t = ("{{ check }}")
+                if (t == "True") {
+                    document.getElementById("e_type").value = "practice";
+                }
+                else {
+                    document.getElementById("e_type").value = "main";
+                }
+            }
+
+            function mypopup(question) {
+                question = question.replace(' ', '+');
+                url = "https://www.google.com/search?rlz=1C1CHBF_enIN757IN757&ei=1j9yXIj8HcndrQHj4bPwCA&q=" + question + "&gs_l=psy-ab.3..0i71l8.0.0..4425...0.0..0.0.0.......0......gws-wiz.UfSrGtl4rMk";
+                width = window.screen.width;
+                height = window.screen.height;
+                mywindow = window.open(url, "Title",
+                    "location=0,status=1,scrollbars=1,resizable=1,menubar=0,toolbar=no,width="
+                    + width + ",height=" + height);
+                mywindow.moveTo(0, 0);
+                mywindow.focus();
+            }
+
+
+        </script>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+            integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s"
+            crossorigin="anonymous"></script>
+    </div>
+</body>
+
+</html>

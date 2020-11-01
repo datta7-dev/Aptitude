@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Home:Student</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+			text-decoration: none;
+			list-style: none;
+			box-sizing: border-box;
+		}
+
+
+		body {
+			background-color: rgb(255, 255, 255);
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
+
+		#main {
+			display: flex;
+		}
+
+		.body-content {
+			flex-basis: 90%;
+			background-color: rgb(255, 255, 255);
+			height: 100%;
+			margin-left: 250px;
+		}
+
+		.side-menu {
+			flex-basis: 10%;
+			position: fixed;
+			background: #97a1a1;
+			width: 250px;
+			height: 100%;
+			margin-top: 0px;
+		}
+
+		.side-menu center img {
+
+			height: 120px;
+			width: 120px;
+			border-radius: 50%;
+			margin-top: 100px;
+			border: 3px solid white;
+		}
+
+		.side-menu center h2 {
+
+			color: #000000;
+		}
+
+		.side-menu a {
+			display: block;
+			line-height: 60px;
+			transition: 0.5s;
+
+		}
+
+		.side-menu a:hover {
+
+			background: rgb(199, 201, 201);
+			text-decoration: none;
+			/*padding-left: 20px;*/
+		}
+
+		.side-menu span {
+			font-size: 20px;
+			margin-left: 10px;
+			color: #000000;
+		}
+
+		.side-menu i {
+
+			font-size: 20px;
+			margin-left: 20px;
+			color: #000000;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="main">
+		<div class="side-menu">
+			<center>
+				<img src="{{ profile }}">
+				<br><br>
+				<h2>{{ user_name }}</h2>
+			</center>
+			<br>
+			<a href="index"><i></i><span>Home</span></a>
+			<a href="examliststudent"><i></i><span>Exams</span></a>
+			<a href="practicetest"><i></i><span>Practice Test</span></a>
+			<a href="#"><i></i><span>results</span></a>
+			<a href="logout"><i></i><span>Logout</span></a>
+		</div>
+	</div>
+	<div class="body-content">
+		<h1>Body content</h1>
+	</div>
+
+	<script>
+		console.log("{{ profile }}")
+	</script>
+</body>
+
+</html>
