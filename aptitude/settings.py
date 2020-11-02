@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'aptitude.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aptitude',
-        'USER': 'aptituderoot',
-        'PASSWORD': 'aptituderoot',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
