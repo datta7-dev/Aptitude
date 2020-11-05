@@ -157,12 +157,18 @@ def student_home(request):
             for user in user_data:
                 user_name = user.name
                 profile = user.profile.url
+            exams_taken = result.objects.filter(
+                    email=request.session.get("user"))
+            e = []
+            for exams in exams_taken:
+                e.append(exams.exam_code)
             exam_data = {
                 "exam": Exam.objects.all().order_by('exam_date'),
                 'user_name': user_name,
                 'profile': profile,
                 "user_name": user_name,
                 "date": date.today(),
+                "exam_taken":e,
             }
             # at student home page to show featured exams by default
             return render(request, "examliststudent.html", exam_data)
