@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from testexam.models import Questions, Subject, Exam, department, faculty, Student, contact, result
 from django.views.generic import View
+from datetime import date
 # Create your views here.
 
 
@@ -157,10 +158,11 @@ def student_home(request):
                 user_name = user.name
                 profile = user.profile.url
             exam_data = {
-                "exam": Exam.objects.all(),
+                "exam": Exam.objects.all().order_by('exam_date'),
                 'user_name': user_name,
                 'profile': profile,
                 "user_name": user_name,
+                "date": date.today(),
             }
             # at student home page to show featured exams by default
             return render(request, "examliststudent.html", exam_data)
@@ -384,55 +386,31 @@ def add_exam(request):
             query = (
                 "insert into testexam_exam(exam_code,exam_date,exam_duration,question_count,subject_code)values(%s,%s,%s,%s,%s)")
             # cursor.execute(query, values)
-            return_data = cursor.execute(query, values)
-            if return_data is not None:
-                # return redirect("/addexam")
-                query = ("select * from testexam_subject")
-                cursor.execute(query)
-                result_data = cursor.fetchall()
-                cursor.close()
-                connection.close()
-                sub_code_list = []
-                sub_name_list = []
-                for d in result_data:
-                    sub_code_list.append(d[0])
-                    sub_name_list.append(d[1])
-                user_data = faculty.objects.filter(
-                    email=request.session.get("user"))
-                for user in user_data:
-                    user_name = user.name
-                    profile = user.profile.url
-                subjects = {
-                    "subject_code": sub_code_list,
-                    "subject_name": sub_name_list,
-                    "success": "exam added successfully",
-                    "user_name": user_name,
-                    "profile": profile,
-                }
-                return render(request, "addexam.html", subjects)
-            else:
-                query = ("select * from testexam_subject")
-                cursor.execute(query)
-                result_data = cursor.fetchall()
-                cursor.close()
-                connection.close()
-                sub_code_list = []
-                sub_name_list = []
-                for d in result_data:
-                    sub_code_list.append(d[0])
-                    sub_name_list.append(d[1])
-                user_data = faculty.objects.filter(
-                    email=request.session.get("user"))
-                for user in user_data:
-                    user_name = user.name
-                    profile = user.profile.url
-                subjects = {
-                    "subject_code": sub_code_list,
-                    "subject_name": sub_name_list,
-                    "failed": "failed to add exam",
-                    "user_name": user_name,
-                }
-                return render(request, "addexam.html", subjects)
+            cursor.execute(query, values)
+            # return redirect("/addexam")
+            query = ("select * from testexam_subject")
+            cursor.execute(query)
+            result_data = cursor.fetchall()
+            cursor.close()
+            connection.close()
+            sub_code_list = []
+            sub_name_list = []
+            for d in result_data:
+                sub_code_list.append(d[0])
+                sub_name_list.append(d[1])
+            user_data = faculty.objects.filter(
+                email=request.session.get("user"))
+            for user in user_data:
+                user_name = user.name
+                profile = user.profile.url
+            subjects = {
+                "subject_code": sub_code_list,
+                "subject_name": sub_name_list,
+                "success": "exam added successfully",
+                "user_name": user_name,
+                "profile": profile,
+            }
+            return render(request, "addexam.html", subjects)
     except Exception as e:
         print(e)
 
@@ -448,7 +426,7 @@ def exam_list(request):
                     user_name = user.name
                     profile = user.profile.url
                 exam_data = {
-                    "exam": Exam.objects.all(),
+                    "exam": Exam.objects.all().order_by('exam_date'),
                     "user_name": user_name,
                     "profile": profile,
                 }
@@ -483,10 +461,17 @@ def examlist_student(request):
                 for user in user_data:
                     user_name = user.name
                     profile = user.profile.url
+                exams_taken = result.objects.filter(
+                    email=request.session.get("user"))
+                e = []
+                for exams in exams_taken:
+                    e.append(exams.exam_code)
                 exam_data = {
-                    "exam": Exam.objects.all(),
+                    "exam": Exam.objects.all().order_by('exam_date'),
                     "user_name": user_name,
                     "profile": profile,
+                    "date": date.today(),
+                    "exam_taken": e,
                 }
                 return render(request, "examliststudent.html", exam_data)
             else:
@@ -592,19 +577,19 @@ def paper_check(request):
     if request.method == "POST":
         q = request.POST["questid"].split(',')
         a = request.POST["ans"].split(',')
-        #m = request.POST["totalmarks"]
+        # m = request.POST["totalmarks"]
         exam_code = request.POST["examcode"]
         exam_type = request.POST["examtype"]
         # print(exam_type)
         # print(exam_code)
-        #marks1 = (m)
-        #print(q, len(q))
-        #print(a, len(a))
+        # marks1 = (m)
+        # print(q, len(q))
+        # print(a, len(a))
         marks = 0
         for i in range(len(q)):
             if Questions.objects.filter(question_id=q[i], correct_answer=a[i]).exists():
                 marks += 1
-        #print("you have total marks of", marks)
+        # print("you have total marks of", marks)
         user_data = Student.objects.filter(
             email=request.session.get("user"))
         for user in user_data:
