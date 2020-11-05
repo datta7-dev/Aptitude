@@ -199,17 +199,17 @@
                 <div class="question-box">
                     <p style="font-weight:bold;padding-bottom:10px;"><span>
                             <script>document.write(i++);</script></span>) {{ q.question }}</p>
-                    <span>a. </span><input type="radio" name="{{ q.question_id }}" value="a">
-                    <span>{{ q.option_a }}</span>
+                    <label><span>a. </span><input type="radio" name="{{ q.question_id }}" value="a">
+                        <span>{{ q.option_a }}</span></label>
                     <br>
-                    <span>b. </span><input type="radio" name="{{ q.question_id }}" value="b">
-                    <span>{{ q.option_b }}</span>
+                    <label><span>b. </span><input type="radio" name="{{ q.question_id }}" value="b">
+                        <span>{{ q.option_b }}</span></label>
                     <br>
-                    <span>c. </span><input type="radio" name="{{ q.question_id }}" value="c">
-                    <span>{{ q.option_c }}</span>
+                    <label><span>c. </span><input type="radio" name="{{ q.question_id }}" value="c">
+                        <span>{{ q.option_c }}</span></label>
                     <br>
-                    <span>d. </span><input type="radio" name="{{ q.question_id }}" value="d">
-                    <span>{{ q.option_d }}</span>
+                    <label><span>d. </span><input type="radio" name="{{ q.question_id }}" value="d">
+                        <span>{{ q.option_d }}</span></label>
                     <br>
                     {% if check is True %}
                     <button onclick="mypopup('{{ q.question }}')" type="button" name="search" value="search"
